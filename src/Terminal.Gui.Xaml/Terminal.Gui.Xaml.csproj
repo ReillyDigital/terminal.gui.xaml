@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<Company>Reilly Digital</Company>
+		<Description>
+			XAML preprocessor for the Terminal.Gui cross platform Terminal UI toolkit for .NET.
+			Terminal.Gui Reference - https://github.com/gui-cs/Terminal.Gui
+		</Description>
+		<EnableSourceLink>true</EnableSourceLink>
+		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<IsRoslynComponent>true</IsRoslynComponent>
+		<LanguageVersion>7.3</LanguageVersion>
+		<PackageId>ReillyDigital.Terminal.Gui.Xaml</PackageId>
+		<PackageProjectUrl>https://gitlab.com/reilly-digital/terminal.gui.xaml</PackageProjectUrl>
+		<PackageTags>csharp, terminal, c#, gui, toolkit, console, tui, xaml</PackageTags>
+		<ProjectGuid>F7DBFC2D-1CC8-4FE3-B4D1-598C8F14112E</ProjectGuid>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://gitlab.com/reilly-digital/terminal.gui.xaml.git</RepositoryUrl>
+		<RootNamespace>ReillyDigital.Terminal.Gui.Xaml</RootNamespace>
+		<Summary>
+			A XAML preprocessor for the Terminal.Gui toolkit for building rich console apps for .NET that works on Windows,
+			Mac, and Linux/Unix.
+		</Summary>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<Title>
+			ReillyDigital.Terminal.Gui.Xaml - A XAML preprocessor for the Terminal.Gui cross-platform
+			Terminal UserInterface (TUI) toolkit for .NET
+		</Title>
+		<Version>1.0.0</Version>
+	</PropertyGroup>
+	<ItemGroup Label="Package References">
+		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" PrivateAssets="all" Version="3.3.4" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all" Version="4.8.0" />
+	</ItemGroup>
+</Project>
