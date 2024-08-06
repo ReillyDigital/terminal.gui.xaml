@@ -7,3 +7,8 @@ This library will process XAML sources to generate C# partial class definitions 
 ## Notes
 
 This library targets the Terminal.Gui 1.X version.
+
+## Links
+
+NuGet:
+https://www.nuget.org/packages/ReillyDigital.Terminal.Gui.Xaml
