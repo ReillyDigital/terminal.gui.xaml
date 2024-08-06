@@ -12,3 +12,9 @@ This library targets the Terminal.Gui 1.X version.
 
 NuGet:
 https://www.nuget.org/packages/ReillyDigital.Terminal.Gui.Xaml
+
+Terminal.Gui - Git:
+https://github.com/gui-cs/Terminal.Gui
+
+Terminal.Gui - NuGet:
+https://www.nuget.org/packages/Terminal.Gui
