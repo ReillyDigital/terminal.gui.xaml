@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
@@ -136,15 +137,28 @@ namespace ReillyDigital.Terminal.Gui.Xaml.Generation.Sources
 				Xaml.Root.Attributes().FirstOrDefault(
 					(attribute) =>
 						attribute.Name.Namespace == "http://schemas.microsoft.com/winfx/2006/xaml"
-						&& attribute.Name.LocalName == "Class"
+						&& attribute.Name.LocalName == "DataType"
 				)?.Value;
 			if (ModelClassName is null)
 			{
 				return "public object? DataContext { get; set; }";
 			}
+			var parts = ModelClassName.Split(':');
+			var namespacePrefix = "";
+			if (parts.Length > 1)
+			{
+				namespacePrefix = Xaml.Root.GetNamespaceOfPrefix(parts[0]).NamespaceName;
+				var namespacePrefixParts = new Regex("^clr-namespace:([^;]+)(?:;assembly=.+)?$").Match(namespacePrefix);
+				if (namespacePrefixParts.Success)
+				{
+					namespacePrefix = namespacePrefixParts.Groups[1].Value;
+				}
+				namespacePrefix += '.';
+				ModelClassName = parts[1];
+			}
 			return ""
-				+ $"private {ModelClassName}? _DataContext;"
-				+ $"public {ModelClassName} DataContext"
+				+ $"private {namespacePrefix}{ModelClassName}? _DataContext;"
+				+ $"public {namespacePrefix}{ModelClassName} DataContext"
 				+ "{"
 				+ "	get => _DataContext ?? throw new($\"{nameof(DataContext)} is not set.\");"
 				+ "	set => _DataContext = value;"
@@ -176,7 +190,7 @@ namespace ReillyDigital.Terminal.Gui.Xaml.Generation.Sources
 				var attributeName = attribute.Name.LocalName;
 				switch (attribute.Name.NamespaceName)
 				{
-					case "https://gitlab.com/reilly-digital":
+					case "https://gitlab.com/reilly-digital/terminal.gui.xaml":
 						{
 							switch (attribute.Name.LocalName)
 							{
@@ -193,6 +207,7 @@ namespace ReillyDigital.Terminal.Gui.Xaml.Generation.Sources
 							switch (attribute.Name.LocalName)
 							{
 								case "Class":
+								case "DataType":
 									{
 										continue;
 									}
@@ -205,7 +220,7 @@ namespace ReillyDigital.Terminal.Gui.Xaml.Generation.Sources
 				var attributeNamespace = attributeNamespaceParts.Success ? attributeNamespaceParts.Groups[1].Value : "";
 				if (
 					attributeNamespace == "http://schemas.microsoft.com/winfx/2006/xaml"
-					&& attribute.Name.LocalName == "Class"
+					&& (attribute.Name.LocalName == "Class" || attribute.Name.LocalName == "DataType")
 				)
 				{
 					continue;
@@ -300,7 +315,7 @@ namespace ReillyDigital.Terminal.Gui.Xaml.Generation.Sources
 				var attributeName = attribute.Name.LocalName;
 				switch (attribute.Name.NamespaceName)
 				{
-					case "https://gitlab.com/reilly-digital":
+					case "https://gitlab.com/reilly-digital/terminal.gui.xaml":
 						{
 							switch (attribute.Name.LocalName)
 							{
@@ -317,6 +332,7 @@ namespace ReillyDigital.Terminal.Gui.Xaml.Generation.Sources
 							switch (attribute.Name.LocalName)
 							{
 								case "Class":
+								case "DataType":
 									{
 										continue;
 									}
