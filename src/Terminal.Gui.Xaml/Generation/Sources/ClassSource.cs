@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
@@ -218,13 +217,6 @@ namespace ReillyDigital.Terminal.Gui.Xaml.Generation.Sources
 				var attributeNamespaceParts =
 					new Regex("^clr-namespace:([^;]+)(?:;assembly=.+)?$").Match(attribute.Name.NamespaceName);
 				var attributeNamespace = attributeNamespaceParts.Success ? attributeNamespaceParts.Groups[1].Value : "";
-				if (
-					attributeNamespace == "http://schemas.microsoft.com/winfx/2006/xaml"
-					&& (attribute.Name.LocalName == "Class" || attribute.Name.LocalName == "DataType")
-				)
-				{
-					continue;
-				}
 				var bindingParts = new Regex("^{Binding (.*)}$").Match(attribute.Value);
 				if (bindingParts.Success)
 				{
@@ -234,13 +226,25 @@ namespace ReillyDigital.Terminal.Gui.Xaml.Generation.Sources
 					}
 					continue;
 				}
-				bindingParts = new Regex("^{TemplateBinding (.*)}$").Match(attribute.Value);
+				bindingParts = new Regex("^{EventBinding (.*)}$").Match(attribute.Value);
 				if (bindingParts.Success)
 				{
 					if (!(ModelClassName is null))
 					{
-						returnValue += $"{attributeName} = {bindingParts.Groups[1].Value};";
+						returnValue += $"{attributeName} += DataContext.{bindingParts.Groups[1].Value};";
 					}
+					continue;
+				}
+				bindingParts = new Regex("^{TemplateBinding (.*)}$").Match(attribute.Value);
+				if (bindingParts.Success)
+				{
+					returnValue += $"{attributeName} = {bindingParts.Groups[1].Value};";
+					continue;
+				}
+				bindingParts = new Regex("^{TemplateEventBinding (.*)}$").Match(attribute.Value);
+				if (bindingParts.Success)
+				{
+					returnValue += $"{attributeName} += {bindingParts.Groups[1].Value};";
 					continue;
 				}
 				returnValue += $"{attributeName} = \"{attribute.Value}\";";
@@ -366,19 +370,13 @@ namespace ReillyDigital.Terminal.Gui.Xaml.Generation.Sources
 				bindingParts = new Regex("^{TemplateBinding (.*)}$").Match(attribute.Value);
 				if (bindingParts.Success)
 				{
-					if (!(ModelClassName is null))
-					{
-						returnValue += $"{variableName}.{attributeName} = {bindingParts.Groups[1].Value};";
-					}
+					returnValue += $"{variableName}.{attributeName} = {bindingParts.Groups[1].Value};";
 					continue;
 				}
 				bindingParts = new Regex("^{TemplateEventBinding (.*)}$").Match(attribute.Value);
 				if (bindingParts.Success)
 				{
-					if (!(ModelClassName is null))
-					{
-						returnValue += $"{variableName}.{attributeName} += {bindingParts.Groups[1].Value};";
-					}
+					returnValue += $"{variableName}.{attributeName} += {bindingParts.Groups[1].Value};";
 					continue;
 				}
 				returnValue += $"{variableName}.{attributeName} = \"{attribute.Value}\";";
@@ -441,7 +439,7 @@ namespace ReillyDigital.Terminal.Gui.Xaml.Generation.Sources
 		/// </returns>
 		private string SourceUsings() => ""
 			+ "using Terminal.Gui;"
-			+ "using ReillyDigital.Terminal.Gui.Xaml;"
+			+ "using Terminal.Gui.Xaml;"
 			+ "";
 	}
 }
