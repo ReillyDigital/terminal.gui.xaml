@@ -1,0 +1,36 @@
+<Window
+	xmlns="https://github.com/gui-cs"
+	xmlns:views="clr-namespace:Terminal.Gui.Xaml.Sample.UI.Views"
+	xmlns:windows="clr-namespace:Terminal.Gui.Xaml.Sample.UI.Windows"
+	xmlns:tx="https://gitlab.com/reilly-digital/terminal.gui.xaml"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	x:Class="Terminal.Gui.Xaml.Sample.UI.Windows.MainWindow"
+	x:DataType="windows:MainWindowModel"
+	Height="{TemplateBinding Dim.Fill()}"
+	Title="{Binding Title}"
+	Width="{TemplateBinding Dim.Fill()}"
+>
+	<View
+		tx:Direction="Horizontal"
+		Height="{TemplateBinding Dim.Fill()}"
+		Width="{TemplateBinding Dim.Fill()}"
+	>
+		<views:HeaderView
+			Height="{TemplateBinding Dim.Fill()}"
+			Width="{TemplateBinding Dim.Percent(50)}"
+		/>
+		<tx:RoutedViewHost
+			x:Name="Router"
+			Height="{TemplateBinding Dim.Fill()}"
+			Width="{TemplateBinding Dim.Percent(50)}"
+		>
+			<tx:RoutedViewHost.DefaultContent>
+				<Label
+					Text="&lt;-- SELECT A VIEW"
+					X="{TemplateBinding Pos.Center()}"
+					Y="{TemplateBinding Pos.Center()}"
+				/>
+			</tx:RoutedViewHost.DefaultContent>
+		</tx:RoutedViewHost>
+	</View>
+</Window>

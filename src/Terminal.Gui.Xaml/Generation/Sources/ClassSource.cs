@@ -136,15 +136,28 @@ namespace ReillyDigital.Terminal.Gui.Xaml.Generation.Sources
 				Xaml.Root.Attributes().FirstOrDefault(
 					(attribute) =>
 						attribute.Name.Namespace == "http://schemas.microsoft.com/winfx/2006/xaml"
-						&& attribute.Name.LocalName == "Class"
+						&& attribute.Name.LocalName == "DataType"
 				)?.Value;
 			if (ModelClassName is null)
 			{
 				return "public object? DataContext { get; set; }";
 			}
+			var parts = ModelClassName.Split(':');
+			var namespacePrefix = "";
+			if (parts.Length > 1)
+			{
+				namespacePrefix = Xaml.Root.GetNamespaceOfPrefix(parts[0]).NamespaceName;
+				var namespacePrefixParts = new Regex("^clr-namespace:([^;]+)(?:;assembly=.+)?$").Match(namespacePrefix);
+				if (namespacePrefixParts.Success)
+				{
+					namespacePrefix = namespacePrefixParts.Groups[1].Value;
+				}
+				namespacePrefix += '.';
+				ModelClassName = parts[1];
+			}
 			return ""
-				+ $"private {ModelClassName}? _DataContext;"
-				+ $"public {ModelClassName} DataContext"
+				+ $"private {namespacePrefix}{ModelClassName}? _DataContext;"
+				+ $"public {namespacePrefix}{ModelClassName} DataContext"
 				+ "{"
 				+ "	get => _DataContext ?? throw new($\"{nameof(DataContext)} is not set.\");"
 				+ "	set => _DataContext = value;"
@@ -176,7 +189,7 @@ namespace ReillyDigital.Terminal.Gui.Xaml.Generation.Sources
 				var attributeName = attribute.Name.LocalName;
 				switch (attribute.Name.NamespaceName)
 				{
-					case "https://gitlab.com/reilly-digital":
+					case "https://gitlab.com/reilly-digital/terminal.gui.xaml":
 						{
 							switch (attribute.Name.LocalName)
 							{
@@ -193,6 +206,7 @@ namespace ReillyDigital.Terminal.Gui.Xaml.Generation.Sources
 							switch (attribute.Name.LocalName)
 							{
 								case "Class":
+								case "DataType":
 									{
 										continue;
 									}
@@ -203,13 +217,6 @@ namespace ReillyDigital.Terminal.Gui.Xaml.Generation.Sources
 				var attributeNamespaceParts =
 					new Regex("^clr-namespace:([^;]+)(?:;assembly=.+)?$").Match(attribute.Name.NamespaceName);
 				var attributeNamespace = attributeNamespaceParts.Success ? attributeNamespaceParts.Groups[1].Value : "";
-				if (
-					attributeNamespace == "http://schemas.microsoft.com/winfx/2006/xaml"
-					&& attribute.Name.LocalName == "Class"
-				)
-				{
-					continue;
-				}
 				var bindingParts = new Regex("^{Binding (.*)}$").Match(attribute.Value);
 				if (bindingParts.Success)
 				{
@@ -219,13 +226,25 @@ namespace ReillyDigital.Terminal.Gui.Xaml.Generation.Sources
 					}
 					continue;
 				}
-				bindingParts = new Regex("^{TemplateBinding (.*)}$").Match(attribute.Value);
+				bindingParts = new Regex("^{EventBinding (.*)}$").Match(attribute.Value);
 				if (bindingParts.Success)
 				{
 					if (!(ModelClassName is null))
 					{
-						returnValue += $"{attributeName} = {bindingParts.Groups[1].Value};";
+						returnValue += $"{attributeName} += DataContext.{bindingParts.Groups[1].Value};";
 					}
+					continue;
+				}
+				bindingParts = new Regex("^{TemplateBinding (.*)}$").Match(attribute.Value);
+				if (bindingParts.Success)
+				{
+					returnValue += $"{attributeName} = {bindingParts.Groups[1].Value};";
+					continue;
+				}
+				bindingParts = new Regex("^{TemplateEventBinding (.*)}$").Match(attribute.Value);
+				if (bindingParts.Success)
+				{
+					returnValue += $"{attributeName} += {bindingParts.Groups[1].Value};";
 					continue;
 				}
 				returnValue += $"{attributeName} = \"{attribute.Value}\";";
@@ -300,7 +319,7 @@ namespace ReillyDigital.Terminal.Gui.Xaml.Generation.Sources
 				var attributeName = attribute.Name.LocalName;
 				switch (attribute.Name.NamespaceName)
 				{
-					case "https://gitlab.com/reilly-digital":
+					case "https://gitlab.com/reilly-digital/terminal.gui.xaml":
 						{
 							switch (attribute.Name.LocalName)
 							{
@@ -317,6 +336,7 @@ namespace ReillyDigital.Terminal.Gui.Xaml.Generation.Sources
 							switch (attribute.Name.LocalName)
 							{
 								case "Class":
+								case "DataType":
 									{
 										continue;
 									}
@@ -350,19 +370,13 @@ namespace ReillyDigital.Terminal.Gui.Xaml.Generation.Sources
 				bindingParts = new Regex("^{TemplateBinding (.*)}$").Match(attribute.Value);
 				if (bindingParts.Success)
 				{
-					if (!(ModelClassName is null))
-					{
-						returnValue += $"{variableName}.{attributeName} = {bindingParts.Groups[1].Value};";
-					}
+					returnValue += $"{variableName}.{attributeName} = {bindingParts.Groups[1].Value};";
 					continue;
 				}
 				bindingParts = new Regex("^{TemplateEventBinding (.*)}$").Match(attribute.Value);
 				if (bindingParts.Success)
 				{
-					if (!(ModelClassName is null))
-					{
-						returnValue += $"{variableName}.{attributeName} += {bindingParts.Groups[1].Value};";
-					}
+					returnValue += $"{variableName}.{attributeName} += {bindingParts.Groups[1].Value};";
 					continue;
 				}
 				returnValue += $"{variableName}.{attributeName} = \"{attribute.Value}\";";
@@ -425,7 +439,7 @@ namespace ReillyDigital.Terminal.Gui.Xaml.Generation.Sources
 		/// </returns>
 		private string SourceUsings() => ""
 			+ "using Terminal.Gui;"
-			+ "using ReillyDigital.Terminal.Gui.Xaml;"
+			+ "using Terminal.Gui.Xaml;"
 			+ "";
 	}
 }

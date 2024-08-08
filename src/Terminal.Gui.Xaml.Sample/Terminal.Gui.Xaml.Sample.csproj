@@ -1,0 +1,60 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<LanguageVersion>12.0</LanguageVersion>
+		<Nullable>enable</Nullable>
+		<OutputType>Exe</OutputType>
+		<ProjectGuid>357FEE0C-88A3-4098-9ACC-39899575B7B9</ProjectGuid>
+		<RootNamespace>Terminal.Gui.Xaml.Sample</RootNamespace>
+		<TargetFramework>net8.0</TargetFramework>
+		<Version>1.0.0</Version>
+	</PropertyGroup>
+	<ItemGroup Label="Package References">
+		<PackageReference Include="Terminal.Gui" Version="1.17.1" />
+	</ItemGroup>
+	<ItemGroup Label="Project References">
+		<ProjectReference Include="../Terminal.Gui.Xaml/Terminal.Gui.Xaml.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false">
+			<Name>ReillyDigital.Terminal.Gui.Xaml</Name>
+			<Project>{F7DBFC2D-1CC8-4FE3-B4D1-598C8F14112E}</Project>
+		</ProjectReference>
+	</ItemGroup>
+	<ItemGroup Label="Global Usings">
+		<Using Include="Terminal.Gui" />
+		<Using Include="Terminal.Gui.Xaml" />
+		<Using Include="Terminal.Gui.Xaml.Sample.UI.Views" />
+		<Using Include="Terminal.Gui.Xaml.Sample.UI.Windows" />
+	</ItemGroup>
+	<!-- <ItemGroup Label="Embedded Resources">
+		<EmbeddedResource Include="UI/**/*.xaml" />
+	</ItemGroup> -->
+	<!-- <ItemGroup Label="Additional Files">
+		<AdditionalFiles Include="UI/**/*.xaml" />
+	</ItemGroup> -->
+	<!-- <ItemGroup>
+		<EmbeddedResource Remove="UI\Components\SidePanelComponent\Component.xaml" />
+		<EmbeddedResource Remove="UI\Components\TopBarComponent\Component.xaml" />
+		<EmbeddedResource Remove="UI\Pages\ConfigureRelaysPage\Page.xaml" />
+		<EmbeddedResource Remove="UI\Pages\SettingsPage\Page.xaml" />
+	</ItemGroup> -->
+	<!-- <ItemGroup>
+		<None Remove="UI\Components\SidePanelComponent\Component.xaml" />
+		<None Remove="UI\Components\TopBarComponent\Component.xaml" />
+		<None Remove="UI\Pages\ConfigureRelaysPage\Page.xaml" />
+		<None Remove="UI\Pages\SettingsPage\Page.xaml" />
+	</ItemGroup> -->
+	<!-- <ItemGroup>
+	  <AdditionalFiles Update="UI\Components\SidePanelComponent\Component.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </AdditionalFiles>
+	  <AdditionalFiles Update="UI\Components\TopBarComponent\Component.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </AdditionalFiles>
+	  <AdditionalFiles Update="UI\Pages\ConfigureRelaysPage\Page.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </AdditionalFiles>
+	  <AdditionalFiles Update="UI\Pages\SettingsPage\Page.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </AdditionalFiles>
+	</ItemGroup> -->
+</Project>
