@@ -8,9 +8,12 @@ public sealed partial class HeaderView : View
 		InitializeComponent();
 	}
 
-	private void OnClickMeButtonClicked() => MessageBox.Query("Button Prompt", "Hello, Button.", "OK");
+	private void OnClickMeButtonClicked() =>
+		MessageBox.Query("Button Prompt", "Hello, Button.", "OK");
 
-	private void OnNavigateFirstButtonClicked() => ((MainWindow)Application.Top).Router.Navigate(new FirstRoutedView());
+	private void OnNavigateFirstButtonClicked() =>
+		((MainWindow)Application.Top).Router.Navigate(new FirstRoutedView());
 
-	private void OnNavigateSecondButtonClicked() => ((MainWindow)Application.Top).Router.Navigate(new SecondRoutedView());
+	private void OnNavigateSecondButtonClicked() =>
+		((MainWindow)Application.Top).Router.Navigate(new SecondRoutedView());
 }

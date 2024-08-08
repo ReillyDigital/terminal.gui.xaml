@@ -6,8 +6,8 @@
 	Width="{TemplateBinding Dim.Fill()}"
 >
 	<Label
-		Height="{TemplateBinding Dim.Fill()}"
 		Text="Content from the first routed view."
-		Width="{TemplateBinding Dim.Fill()}"
+		X="{TemplateBinding Pos.Center()}"
+		Y="{TemplateBinding Pos.Center()}"
 	/>
 </UserControl>

@@ -20,8 +20,8 @@
 		</ProjectReference>
 	</ItemGroup>
 	<ItemGroup Label="Global Usings">
-		<Using Include="ReillyDigital.Terminal.Gui.Xaml" />
 		<Using Include="Terminal.Gui" />
+		<Using Include="Terminal.Gui.Xaml" />
 		<Using Include="Terminal.Gui.Xaml.Sample.UI.Views" />
 		<Using Include="Terminal.Gui.Xaml.Sample.UI.Windows" />
 	</ItemGroup>
