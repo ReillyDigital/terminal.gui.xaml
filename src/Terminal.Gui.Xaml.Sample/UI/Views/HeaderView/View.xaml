@@ -1,0 +1,24 @@
+<UserControl
+	xmlns="https://github.com/gui-cs"
+	xmlns:views="clr-namespace:Terminal.Gui.Xaml.Sample.UI.Views"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	x:Class="Terminal.Gui.Xaml.Sample.UI.Views.HeaderView"
+	x:DataType="views:HeaderViewModel"
+>
+	<Label
+		Text="{Binding Greeting}"
+		Width="{TemplateBinding Dim.Fill()}"
+	/>
+	<Button
+		Clicked="{TemplateEventBinding OnClickMeButtonClicked}"
+		Text="Click Me!"
+	/>
+	<Button
+		Clicked="{TemplateEventBinding OnNavigateFirstButtonClicked}"
+		Text="Show First Routed View"
+	/>
+	<Button
+		Clicked="{TemplateEventBinding OnNavigateSecondButtonClicked}"
+		Text="Show Second Routed View"
+	/>
+</UserControl>
