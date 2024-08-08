@@ -6,44 +6,63 @@ This library will process XAML sources to generate C# partial class definitions 
 
 ## Usage
 
-Create a XAML View named like MyWindow.xaml.cs:
+Create a XAML View named like `MyWindow.xaml`:
 ```xml
 <Window
-	xmlns="https://gitlab.com/reilly-digital"
-	Title="XAML Example"
+	xmlns="https://github.com/gui-cs"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	x:Class="MyWindow"
+	x:DataType="MyWindowModel"
 	Height="{TemplateBinding Dim.Fill()}"
+	Title="XAML Example"
 	Width="{TemplateBinding Dim.Fill()}"
 >
-	<Label Text="{TemplateBinding Greeting}" X="{TemplateBinding Pos.Center()}" />
+	<Label Text="{Binding Greeting}" X="{TemplateBinding Pos.Center()}" />
 	<Button
+		Clicked="{TemplateEventBinding OnClickMeButtonClicked}"
 		Text="Click Me!"
-		Clicked="{TemplateEventBinding Button_Clicked}"
 		X="{TemplateBinding Pos.Center()}"
 	/>
-	<MyView Height="{TemplateBinding Dim.Percent(10)}" Width="{TemplateBinding Dim.Fill()}" />
+	<MyView
+		Height="{TemplateBinding Dim.Percent(10)}"
+		Width="{TemplateBinding Dim.Fill()}"
+	/>
 </Window>
 ```
 
-Create a C# code-behind named like MyWindow.cs:
+Create a C# code-behind file named like `MyWindow.xaml.cs`:
 ```csharp
 public partial class MyWindow : Window
 {
 	private string Greeting { get; } = "Hello, World.";
 
-	public MyWindow() : base() => InitializeComponent();
+	public MyWindow() : base()
+	{
+		DataContext = new MyWindowModel();
+		InitializeComponent();
+	}
 
-	private void Button_Clicked() => MessageBox.Query("Button Prompt", "Hello, Button.", "OK");
+	private void OnClickMeButtonClicked() =>
+		MessageBox.Query("Button Prompt", "Hello, Button.", "OK");
 }
 ```
 
-Create a XAML View named like MyView.xaml.cs:
+Create a C# model file named like `MyWindowModel.cs`:
+```csharp
+public class MyWindowModel
+{
+	public string Greeting { get; } = "Hello, World.";
+}
+```
+
+Create a XAML View file named like `MyView.xaml`:
 ```xml
-<UserControl xmlns="https://gitlab.com/reilly-digital">
+<UserControl xmlns="https://github.com/gui-cs">
 	<Label Text="Content from MyView!" />
 </UserControl>
 ```
 
-Create a C# code-behind named like MyView.cs:
+Create a C# code-behind file named like `MyView.xaml.cs`:
 ```csharp
 public partial class MyView : View
 {
@@ -56,6 +75,9 @@ public partial class MyView : View
 This library targets the Terminal.Gui 1.X version.
 
 ## Links
+
+Sample Project:
+https://gitlab.com/reilly-digital/terminal.gui.xaml/-/tree/main/src/Terminal.Gui.Xaml.Sample
 
 NuGet:
 https://www.nuget.org/packages/ReillyDigital.Terminal.Gui.Xaml
