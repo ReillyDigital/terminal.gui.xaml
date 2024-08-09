@@ -14,7 +14,11 @@
 		<PackageReference Include="Terminal.Gui" Version="1.17.1" />
 	</ItemGroup>
 	<ItemGroup Label="Project References">
-		<ProjectReference Include="../Terminal.Gui.Xaml/Terminal.Gui.Xaml.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false">
+		<ProjectReference
+			Include="../Terminal.Gui.Xaml/Terminal.Gui.Xaml.csproj"
+			OutputItemType="Analyzer"
+			ReferenceOutputAssembly="false"
+		>
 			<Name>ReillyDigital.Terminal.Gui.Xaml</Name>
 			<Project>{F7DBFC2D-1CC8-4FE3-B4D1-598C8F14112E}</Project>
 		</ProjectReference>
@@ -25,36 +29,4 @@
 		<Using Include="Terminal.Gui.Xaml.Sample.UI.Views" />
 		<Using Include="Terminal.Gui.Xaml.Sample.UI.Windows" />
 	</ItemGroup>
-	<!-- <ItemGroup Label="Embedded Resources">
-		<EmbeddedResource Include="UI/**/*.xaml" />
-	</ItemGroup> -->
-	<!-- <ItemGroup Label="Additional Files">
-		<AdditionalFiles Include="UI/**/*.xaml" />
-	</ItemGroup> -->
-	<!-- <ItemGroup>
-		<EmbeddedResource Remove="UI\Components\SidePanelComponent\Component.xaml" />
-		<EmbeddedResource Remove="UI\Components\TopBarComponent\Component.xaml" />
-		<EmbeddedResource Remove="UI\Pages\ConfigureRelaysPage\Page.xaml" />
-		<EmbeddedResource Remove="UI\Pages\SettingsPage\Page.xaml" />
-	</ItemGroup> -->
-	<!-- <ItemGroup>
-		<None Remove="UI\Components\SidePanelComponent\Component.xaml" />
-		<None Remove="UI\Components\TopBarComponent\Component.xaml" />
-		<None Remove="UI\Pages\ConfigureRelaysPage\Page.xaml" />
-		<None Remove="UI\Pages\SettingsPage\Page.xaml" />
-	</ItemGroup> -->
-	<!-- <ItemGroup>
-	  <AdditionalFiles Update="UI\Components\SidePanelComponent\Component.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </AdditionalFiles>
-	  <AdditionalFiles Update="UI\Components\TopBarComponent\Component.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </AdditionalFiles>
-	  <AdditionalFiles Update="UI\Pages\ConfigureRelaysPage\Page.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </AdditionalFiles>
-	  <AdditionalFiles Update="UI\Pages\SettingsPage\Page.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </AdditionalFiles>
-	</ItemGroup> -->
 </Project>
