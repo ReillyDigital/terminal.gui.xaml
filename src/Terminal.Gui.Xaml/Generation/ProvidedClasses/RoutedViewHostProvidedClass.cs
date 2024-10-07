@@ -35,7 +35,7 @@ public sealed class RoutedViewHost : View
 		{
 			RemoveAll();
 			_CurrentView = value;
-			var view = _CurrentView ?? _DefaultView
+			var view = _CurrentView ?? _DefaultView;
 			if (view is not null) {
 				Add(view);
 			}

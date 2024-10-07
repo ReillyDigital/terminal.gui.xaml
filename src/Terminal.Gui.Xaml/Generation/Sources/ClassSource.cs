@@ -108,11 +108,11 @@ namespace ReillyDigital.Terminal.Gui.Xaml.Generation.Sources
 			+ SourceUsings()
 			+ SourceNamespace()
 			+ SourceClassWrapper(
-					SourceDataContextProperty(),
-					SourceNamedElementProperties(),
-					SourceInitializeComponentMethod()
-			)
-			+ "";
+				SourceEvents(),
+				SourceDataContextProperty(),
+				SourceNamedElementProperties(),
+				SourceInitializeComponentMethod()
+			);
 
 		/// <summary>
 		/// Generates C# source code for the class declaration of the generated partial class file.
@@ -122,7 +122,10 @@ namespace ReillyDigital.Terminal.Gui.Xaml.Generation.Sources
 		/// A <see cref="string" /> of the generated source code.
 		/// </returns>
 		private string SourceClassWrapper(params string[] contents) =>
-			$"public partial class {ClassName} : ITerminalXamlView {{ {string.Join("\r\n", contents)} }}";
+			$"public partial class {ClassName} : INotifyPropertyChanged, ITerminalXamlView"
+			+ "{"
+			+ string.Join("\r\n", contents)
+			+ "}";
 
 		/// <summary>
 		/// Generates C# source code for the view model's DataContext property of the generated partial class file.
@@ -137,11 +140,7 @@ namespace ReillyDigital.Terminal.Gui.Xaml.Generation.Sources
 					(attribute) =>
 						attribute.Name.Namespace == "http://schemas.microsoft.com/winfx/2006/xaml"
 						&& attribute.Name.LocalName == "DataType"
-				)?.Value;
-			if (ModelClassName is null)
-			{
-				return "public object? DataContext { get; set; }";
-			}
+				)?.Value ?? "object";
 			var parts = ModelClassName.Split(':');
 			var namespacePrefix = "";
 			if (parts.Length > 1)
@@ -160,10 +159,24 @@ namespace ReillyDigital.Terminal.Gui.Xaml.Generation.Sources
 				+ $"public {namespacePrefix}{ModelClassName} DataContext"
 				+ "{"
 				+ "	get => _DataContext ?? throw new($\"{nameof(DataContext)} is not set.\");"
-				+ "	set => _DataContext = value;"
-				+ "}"
-				+ "";
+				+ "	set"
+				+ "	{"
+				+ "		_DataContext = value;"
+				+ "		PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DataContext)));"
+				+ "		DataContextChanged?.Invoke(this, new EventArgs());"
+				+ "	}"
+				+ "}";
 		}
+
+		/// <summary>
+		/// Generates C# source code for the events of the generated partial class file.
+		/// </summary>
+		/// <returns>
+		/// A <see cref="string" /> of the generated source code.
+		/// </returns>
+		private string SourceEvents() => ""
+			+ "public event EventHandler? DataContextChanged;"
+			+ "public event PropertyChangedEventHandler? PropertyChanged;";
 
 		/// <summary>
 		/// Generates C# source code for the file-level compiler flags of the generated partial class file.
@@ -222,7 +235,7 @@ namespace ReillyDigital.Terminal.Gui.Xaml.Generation.Sources
 				{
 					if (!(ModelClassName is null))
 					{
-						returnValue += $"{attributeName} = DataContext.{bindingParts.Groups[1].Value};";
+						returnValue += $"DataContextChanged += (object? sender, EventArgs e) => {{ {attributeName} = DataContext.{bindingParts.Groups[1].Value}; }};";
 					}
 					continue;
 				}
@@ -354,7 +367,7 @@ namespace ReillyDigital.Terminal.Gui.Xaml.Generation.Sources
 				{
 					if (!(ModelClassName is null))
 					{
-						returnValue += $"{variableName}.{attributeName} = DataContext.{bindingParts.Groups[1].Value};";
+						returnValue += $"DataContextChanged += (object? sender, EventArgs e) => {{ {variableName}.{attributeName} = DataContext.{bindingParts.Groups[1].Value}; }};";
 					}
 					continue;
 				}
@@ -431,6 +444,7 @@ namespace ReillyDigital.Terminal.Gui.Xaml.Generation.Sources
 		/// </returns>
 		private string SourceNamespace() => NamespaceName is null ? "" : $"namespace {NamespaceName};";
 
+
 		/// <summary>
 		/// Generates C# source code for the file-level using statements of the generated partial class file.
 		/// </summary>
@@ -438,6 +452,7 @@ namespace ReillyDigital.Terminal.Gui.Xaml.Generation.Sources
 		/// A <see cref="string" /> of the generated source code.
 		/// </returns>
 		private string SourceUsings() => ""
+			+ "using System.ComponentModel;"
 			+ "using Terminal.Gui;"
 			+ "using Terminal.Gui.Xaml;"
 			+ "";
