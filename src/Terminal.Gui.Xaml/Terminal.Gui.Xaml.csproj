@@ -17,7 +17,7 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 		<PackageTags>csharp, terminal, c#, gui, toolkit, console, tui, xaml</PackageTags>
-		<PackageVersion>1.0.2</PackageVersion>
+		<PackageVersion>1.0.3</PackageVersion>
 		<ProjectGuid>F7DBFC2D-1CC8-4FE3-B4D1-598C8F14112E</ProjectGuid>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<RepositoryType>git</RepositoryType>
@@ -33,7 +33,7 @@
 			ReillyDigital.Terminal.Gui.Xaml - A XAML preprocessor for the Terminal.Gui cross-platform
 			Terminal UserInterface (TUI) toolkit for .NET
 		</Title>
-		<Version>1.0.2</Version>
+		<Version>1.0.3</Version>
 	</PropertyGroup>
 	<ItemGroup Label="Package References">
 		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" PrivateAssets="all" Version="3.3.4" />
